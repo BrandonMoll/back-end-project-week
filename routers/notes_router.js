@@ -7,7 +7,7 @@ const db = knex(dbConfig.development);
 
 router.use(express.json());
 
-router.get('/notes', (req, res) => {
+router.get('/', (req, res) => {
     db('notes')
     .then(rows => {
         res.json(rows)
@@ -17,7 +17,7 @@ router.get('/notes', (req, res) => {
     })
 });
 
-router.get('/notes/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const {id} = req.params;
     db('notes').where('id', id)
     .then(rows => {
@@ -28,7 +28,8 @@ router.get('/notes/:id', (req, res) => {
     })
 });
 
-router.post('/notes', (req, res) => {
+
+router.post('/', (req, res) => {
     const newNote = req.body;
     if(newNote.title && newNote.content) {
         db('notes').insert(newNote)
@@ -43,7 +44,7 @@ router.post('/notes', (req, res) => {
     }
 });
 
-router.put('/notes/:id', (req, res) => {
+router.put('/:id', (req, res) => {
     const {id} = req.params;
     const updatedNote = req.body;
 
@@ -60,7 +61,7 @@ router.put('/notes/:id', (req, res) => {
     }
 });
 
-router.delete('/notes/id', (req, res) => {
+router.delete('/:id', (req, res) => {
     const {id} = req.params;
 
     db('notes').where('id', id).del()
