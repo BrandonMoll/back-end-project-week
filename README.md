@@ -1,3 +1,7 @@
+***TRELLO BOARD URL***
+https://trello.com/b/h1B4FMKe/lambda-notesbackend-brandon-moll
+
+
 # Back End Project Week
 
 This week you will build a backend for a note taking app called "Lambda Notes".
