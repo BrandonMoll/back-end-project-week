@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon"
+    "server": "nodemon",
+    "start": "node index.js"
   },
   "repository": "https://github.com/BrandonMoll/back-end-project-week.git",
   "author": "BrandonMoll <brandonmoll85@gmail.com>",
