@@ -1,12 +1,4 @@
 require('dotenv').config();
-const localPg = {
-  host: 'localhost',
-  database: 'notesDB',
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS
-};
-
-const dbConnection = process.env.DATABASE_URL || localPg;
 
 module.exports = {
 
@@ -15,7 +7,7 @@ module.exports = {
     connection: {
       filename: './notesDB.db3'
     },
-    useNullAsDefault: true,
+    NullAsDefault: true,
     migrations: {
       directory: './data/migrations'
     },
@@ -26,13 +18,13 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: dbConnection,
+    connection: process.env.DATABASE_URL,
     pool: {
       min: 2,
       max: 10
     },
-    useNullAsDefault: true,
     migrations: {
+      tableName: 'knex_migrations',
       directory: './data/migrations'
     },
     seeds: {
