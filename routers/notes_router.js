@@ -4,7 +4,7 @@ const dbConfig = require('../knexfile');
 
 
 const router = express.Router();
-const db = knex(dbConfig.production || dbConfig.development);
+const db = knex(dbConfig.development);
 
 router.use(express.json());
 
