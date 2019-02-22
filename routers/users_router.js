@@ -1,12 +1,14 @@
 const express = require('express');
 const knex = require('knex');
 const dbConfig = require('../knexfile');
+const cors = require('cors');
 
 
 const router = express.Router();
 const db = knex(dbConfig.development);
 
 router.use(express.json());
+router.use(cors('*'))
 
 router.get('/', (req, res) => {
     db('users')
