@@ -29,10 +29,36 @@ router.get('/:id', (req, res) => {
     })
 });
 
+router.get('/finduser/:user', (req, res) => {
+    const {user} = req.params;
+    const newUser = req.body;
+    db('users').where('user', user)
+    .then(user => {
+        if(user) {
+            res.json(user)
+        } else {
+            router.post('/', (req, res) => {
+                if(newUser.user) {
+                    db('users').insert(newUser)
+                    .then(id => {
+                        res.status(201).json(id);
+                    })
+                    .catch(err => {
+                        res.status(500).json({ error: 'error creating new user'})
+                    })
+                }
+            })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'error finding user' })
+    })
+})
+
 router.post('/', (req, res) => {
     const newUser = req.body;
     if(newUser.user) {
-        db('user').insert(newUser)
+        db('users').insert(newUser)
         .then(ids => {
             res.status(201).json(ids)
         })
