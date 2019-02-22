@@ -7,7 +7,7 @@ const cors = require('cors')
 const server = express();
 const port = process.env.PORT
 
-server.use(cors());
+server.use(cors('*'));
 server.use(express.json());
 server.use('/api/notes', notesRouter);
 server.use('/api/users', usersRouter);
