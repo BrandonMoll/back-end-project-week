@@ -39,6 +39,7 @@ router.get('/finduser/:user', (req, res) => {
         //if it exists, send back the user
 
         if(dbUser.user) {
+            console.log('found user')
             res.json(dbUser)
         } else {
 
@@ -47,12 +48,13 @@ router.get('/finduser/:user', (req, res) => {
             router.post('/', (req, res) => {
                     db('users').insert(user)
                     .then(id => {
-
+                        console.log('inside post response')
                         //then get that user by the id and send it back
 
                         router.get('/', (req, res) => {
                             db('users').where('id', id)
                             .then(rows => {
+                                console.log('found new user')
                                 res.json(rows)
                             })
                             .catch(err => {
