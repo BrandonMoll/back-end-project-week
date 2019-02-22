@@ -41,7 +41,13 @@ router.get('/finduser/:user', (req, res) => {
                 if(newUser.user) {
                     db('users').insert(newUser)
                     .then(id => {
-                        res.status(201).json(id);
+                        db('users').where('id', id)
+                        .then(rows => {
+                            res.json(rows)
+                        })
+                        .catch(err => {
+                            res.status(500).json({ error: 'error getting new user' })
+                        })
                     })
                     .catch(err => {
                         res.status(500).json({ error: 'error creating new user'})
