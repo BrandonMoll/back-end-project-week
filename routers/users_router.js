@@ -8,7 +8,6 @@ const router = express.Router();
 const db = knex(dbConfig.development);
 
 router.use(express.json());
-router.use(cors('*'))
 
 router.get('/', (req, res) => {
     db('users')
@@ -31,7 +30,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.get('/finduser/:user', (req, res) => {
+router.get('/finduser/:user', cors(), (req, res) => {
     const {user} = req.params;
     //find user in db by username
 
