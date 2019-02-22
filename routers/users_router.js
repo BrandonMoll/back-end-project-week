@@ -32,21 +32,34 @@ router.get('/:id', (req, res) => {
 router.get('/finduser/:user', (req, res) => {
     const {user} = req.params;
     const newUser = req.body;
+    //find user in db by username
+
     db('users').where('user', user)
-    .then(user => {
-        if(user) {
-            res.json(user)
+    .then(dbUser => {
+
+        //if it exists, send back the user
+
+        if(dbUser.user) {
+            res.json(dbUser)
         } else {
+
+            //if not, create a new user
+
             router.post('/', (req, res) => {
                 if(newUser.user) {
                     db('users').insert(newUser)
                     .then(id => {
-                        db('users').where('id', id)
-                        .then(rows => {
-                            res.json(rows)
-                        })
-                        .catch(err => {
-                            res.status(500).json({ error: 'error getting new user' })
+
+                        //then get that user by the id and send it back
+
+                        router.get('/', (req, res) => {
+                            db('users').where('id', id)
+                            .then(rows => {
+                                res.json(rows)
+                            })
+                            .catch(err => {
+                                res.status(500).json({ error: 'error getting new user' })
+                            })
                         })
                     })
                     .catch(err => {
