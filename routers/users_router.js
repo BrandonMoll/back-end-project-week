@@ -1,6 +1,7 @@
 const express = require('express');
 const knex = require('knex');
 const dbConfig = require('../knexfile');
+const cors = require('cors');
 
 
 const router = express.Router();
@@ -29,10 +30,54 @@ router.get('/:id', (req, res) => {
     })
 });
 
+router.get('/finduser/:user', cors(), (req, res) => {
+    const {user} = req.params;
+    //find user in db by username
+
+    db('users').where('user', user)
+    .then(dbUser => {
+
+        //if it exists, send back the user
+
+        if(dbUser.user) {
+            console.log('found user')
+            res.json(dbUser)
+        } else {
+
+            //if not, create a new user
+
+            router.post('/', (req, res) => {
+                    db('users').insert(user)
+                    .then(id => {
+                        console.log('inside post response')
+                        //then get that user by the id and send it back
+
+                        router.get('/', (req, res) => {
+                            db('users').where('id', id)
+                            .then(rows => {
+                                console.log('found new user')
+                                res.json(rows)
+                            })
+                            .catch(err => {
+                                res.status(500).json({ error: 'error getting new user' })
+                            })
+                        })
+                    })
+                    .catch(err => {
+                        res.status(500).json({ error: 'error creating new user'})
+                    })
+            })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'error finding user' })
+    })
+})
+
 router.post('/', (req, res) => {
     const newUser = req.body;
     if(newUser.user) {
-        db('user').insert(newUser)
+        db('users').insert(newUser)
         .then(ids => {
             res.status(201).json(ids)
         })
